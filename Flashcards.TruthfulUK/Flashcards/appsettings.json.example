@@ -1,0 +1,5 @@
+﻿{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\YOUR_INSTANCE_NAME;Database=YOUR_DB_NAME;Trusted_Connection=True;"
+  }
+}

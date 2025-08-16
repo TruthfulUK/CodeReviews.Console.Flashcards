@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
 using Dapper;
+using Flashcards.Models;
 
 namespace Flashcards.Database;
 public class Database
@@ -43,6 +44,27 @@ public class Database
                 );";
 
             connection.Execute(sql);
+        }
+    }
+
+    public List<Card> SelectCardsFromStackId(int stackId)
+    {
+        using (var connection = GetConnection())
+        {
+            var parameters = new { StackId = stackId };
+            string sql = @"
+                SELECT * From Cards
+                WHERE StackId = @StackId";
+            return connection.Query<Card>(sql, parameters).ToList();
+        }
+    }
+
+    public List<Stack> SelectAllStacks()
+    {
+        using (var connection = GetConnection())
+        {
+            string sql = @"SELECT * FROM Stacks";
+            return connection.Query<Stack>(sql).ToList();
         }
     }
 

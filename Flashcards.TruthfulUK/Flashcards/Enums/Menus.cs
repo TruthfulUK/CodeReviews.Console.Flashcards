@@ -1,0 +1,23 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Flashcards.Enums;
+internal static class Menus
+{
+    internal enum MainMenu
+    {
+        [Display(Name = "Manage Cards")]
+        ManageCards,
+
+        [Display(Name = "Manage Stacks")]
+        ManageStacks,
+
+        [Display(Name = "Start a Study Session")]
+        StartStudy,
+
+        [Display(Name = "View Historic Study Sessions")]
+        ViewStudyHistory,
+
+        [Display(Name = "Exit Application")]
+        ExitApplication
+    }
+}

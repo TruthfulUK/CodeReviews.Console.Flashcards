@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using Flashcards.Database;
+using Flashcards.Models;
 using System;
-using System.Collections.Generic;
 using System.Data;
 
 public class SeedData
@@ -16,53 +16,51 @@ public class SeedData
     public void InsertSeedData()
     {
         using var connection = _database.GetConnection();
-        using var transaction = connection.BeginTransaction();
 
-        try
+        var existingCount = connection.ExecuteScalar<int>("SELECT COUNT(1) FROM Stacks");
+        if (existingCount > 0) return;
+
+        var stacks = new List<Stack>
         {
-            var stacks = new List<(string Name, List<(string Front, string Back)> Cards)>
-            {
-                ("C# Basics", new List<(string, string)>
-                {
-                    ("Keyword to define a class?", "class"),
-                    ("Access modifier for public visibility?", "public"),
-                    ("Type-safe loop keyword?", "foreach"),
-                    ("Entry point method in C#?", "Main"),
-                    ("Symbol used for inheritance?", ":")
-                }),
-                ("SQL Essentials", new List<(string, string)>
-                {
-                    ("Keyword to retrieve data?", "SELECT"),
-                    ("Clause to filter rows?", "WHERE"),
-                    ("Clause to sort results?", "ORDER BY"),
-                    ("Keyword to join tables?", "JOIN"),
-                    ("Keyword to remove duplicates?", "DISTINCT")
-                })
-            };
+            new Stack { Name = "CSharp" },
+            new Stack { Name = "SQL" }
+        };
 
-            foreach (var (stackName, cards) in stacks)
-            {
-                var stackId = connection.QuerySingle<int>(
-                    @"INSERT INTO Stacks (Name) VALUES (@Name);
-                      SELECT CAST(SCOPE_IDENTITY() AS INT);",
-                    new { Name = stackName }, transaction);
+        foreach (var stack in stacks)
+        {
+            var insertStackSql = "INSERT INTO Stacks (Name) OUTPUT INSERTED.Id VALUES (@Name)";
+            stack.Id = connection.ExecuteScalar<int>(insertStackSql, stack);
 
-                foreach (var (front, back) in cards)
-                {
-                    connection.Execute(
-                        @"INSERT INTO Cards (Front, Back, StackId)
-                          VALUES (@Front, @Back, @StackId);",
-                        new { Front = front, Back = back, StackId = stackId },
-                        transaction);
-                }
+            var cards = GetCardsForStack(stack.Name);
+            foreach (var card in cards)
+            {
+                var insertCardSql = "INSERT INTO Cards (Front, Back, StackId) VALUES (@Front, @Back, @StackId)";
+                connection.Execute(insertCardSql, new { card.Front, card.Back, StackId = stack.Id });
             }
+        }
+    }
 
-            transaction.Commit();
-        }
-        catch
+    private List<Card> GetCardsForStack(string stackName)
+    {
+        return stackName switch
         {
-            transaction.Rollback();
-            throw;
-        }
+            "CSharp" => new List<Card>
+        {
+            new Card { Front = "Keyword to define a class", Back = "class" },
+            new Card { Front = "Keyword to create object", Back = "new" },
+            new Card { Front = "Namespace for collections", Back = "System.Collections" },
+            new Card { Front = "Access modifier for inheritance", Back = "protected" },
+            new Card { Front = "Base type of all types", Back = "object" }
+        },
+            "SQL" => new List<Card>
+        {
+            new Card { Front = "Keyword to select data", Back = "SELECT" },
+            new Card { Front = "Clause to filter rows", Back = "WHERE" },
+            new Card { Front = "Command to add data", Back = "INSERT" },
+            new Card { Front = "Command to remove table", Back = "DROP" },
+            new Card { Front = "Function to count rows", Back = "COUNT" }
+        },
+            _ => new List<Card>()
+        };
     }
 }

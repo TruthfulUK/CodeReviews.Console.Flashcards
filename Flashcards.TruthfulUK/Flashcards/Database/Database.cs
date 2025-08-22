@@ -1,14 +1,28 @@
-﻿using Microsoft.Data.SqlClient;
-using System.Data;
-using Dapper;
+﻿using Dapper;
+using Flashcards.Config;
 using Flashcards.Models;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace Flashcards.Database;
-public class Database
+public sealed class Database
 {
     private readonly string _connectionString;
 
-    public Database(string connectionString)
+    private static readonly Lazy<Database> _instance = new Lazy<Database>(() =>
+    {
+        string? connStr = AppConfig.Instance.GetConnectionString("DefaultConnection");
+
+        if (string.IsNullOrWhiteSpace(connStr))
+            throw new InvalidOperationException("Missing 'DefaultConnection' in configuration.");
+
+        return new Database(connStr);
+    });
+
+    public static Database Instance => _instance.Value;
+
+    private Database(string connectionString)
     {
         _connectionString = connectionString;
     }

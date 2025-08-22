@@ -1,9 +1,7 @@
-﻿using Flashcards.Config;
-using Flashcards.Database;
+﻿using Flashcards.Database;
 using Flashcards.Views;
 
-var config  = new AppConfig();
-var db      = new Database(config.GetConnectionString());
+var db      = Database.Instance;
 var seeder  = new SeedData(db);
 var ui      = new UserInterface();
 

@@ -1,22 +1,34 @@
 ﻿using Microsoft.Extensions.Configuration;
 
 namespace Flashcards.Config;
-internal class AppConfig
+public sealed class AppConfig
 {
-    private readonly IConfigurationRoot _configuration;
+    private static readonly Lazy<IConfigurationRoot> _instance =
+        new Lazy<IConfigurationRoot>(() => BuildConfiguation());
 
-    public AppConfig()
+    private AppConfig () { }
+
+    public static IConfigurationRoot Instance => _instance.Value;
+
+    private static IConfigurationRoot BuildConfiguation()
     {
-        var builder = new ConfigurationBuilder()
+
+        try
+        {
+            return new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", optional: false);
-
-        _configuration = builder.Build();
-    }
-
-    public string GetConnectionString()
-    {
-        return _configuration.GetConnectionString("DefaultConnection")
-               ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            .AddJsonFile("appsettings.json", optional: false)
+            .Build();
+        }
+        catch (FileNotFoundException ex)
+        {
+            Console.Error.WriteLine($"Missing configuration file: {ex.Message}");
+            throw new InvalidOperationException("Configuration file (appsettings.json) is required.", ex);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Unexpected error: {ex.Message}");
+            throw new InvalidOperationException("Failed to build configuration.", ex);
+        }
     }
 }

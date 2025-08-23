@@ -1,14 +1,14 @@
-﻿using Flashcards.Helpers;
+﻿using Flashcards.Controllers;
+using Flashcards.Helpers;
 using static Flashcards.Enums.Menus;
 
 namespace Flashcards.Views;
 public class UserInterface
 {
-    private readonly bool runApp = true;
-
+    private readonly CardsController _cardsController = new CardsController();
     public void Display()
     {
-        while (runApp)
+        while (true)
         {
             InterfaceHelpers.DisplayHeader("Main Menu");
 
@@ -18,6 +18,7 @@ public class UserInterface
             switch (mainMenuChoice)
             {
                 case MainMenu.ManageCards:
+                    _cardsController.DisplayInterface();
                     break;
                 case MainMenu.ManageStacks:
                     break;

@@ -1,30 +1,30 @@
 ﻿using Dapper;
 using Flashcards.Config;
-using Flashcards.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace Flashcards.Database;
-public sealed class Database
+public sealed class AppDatabase
 {
     private readonly string _connectionString;
 
-    private static readonly Lazy<Database> _instance = new Lazy<Database>(() =>
+    private static readonly Lazy<AppDatabase> _instance = new Lazy<AppDatabase>(() =>
     {
         string? connStr = AppConfig.Instance.GetConnectionString("DefaultConnection");
 
         if (string.IsNullOrWhiteSpace(connStr))
             throw new InvalidOperationException("Missing 'DefaultConnection' in configuration.");
 
-        return new Database(connStr);
+        return new AppDatabase(connStr);
     });
 
-    public static Database Instance => _instance.Value;
+    public static AppDatabase Instance => _instance.Value;
 
-    private Database(string connectionString)
+    private AppDatabase(string connectionString)
     {
         _connectionString = connectionString;
+        InitializeDatabase();
     }
 
     public IDbConnection GetConnection()
@@ -58,27 +58,6 @@ public sealed class Database
                 );";
 
             connection.Execute(sql);
-        }
-    }
-
-    public List<Card> SelectCardsFromStackId(int stackId)
-    {
-        using (var connection = GetConnection())
-        {
-            var parameters = new { StackId = stackId };
-            string sql = @"
-                SELECT * From Cards
-                WHERE StackId = @StackId";
-            return connection.Query<Card>(sql, parameters).ToList();
-        }
-    }
-
-    public List<Stack> SelectAllStacks()
-    {
-        using (var connection = GetConnection())
-        {
-            string sql = @"SELECT * FROM Stacks";
-            return connection.Query<Stack>(sql).ToList();
         }
     }
 

@@ -12,7 +12,6 @@ public sealed class AppConfig
 
     private static IConfigurationRoot BuildConfiguation()
     {
-
         try
         {
             return new ConfigurationBuilder()

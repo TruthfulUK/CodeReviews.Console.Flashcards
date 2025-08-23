@@ -1,10 +1,7 @@
-﻿using Flashcards.Database;
-using Flashcards.Views;
+﻿using Flashcards.Views;
 
-var db      = Database.Instance;
-var seeder  = new SeedData(db);
+var seeder  = new SeedData();
 var ui      = new UserInterface();
 
-db.InitializeDatabase();
 seeder.InsertSeedData();
 ui.Display();

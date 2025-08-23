@@ -1,16 +1,14 @@
 ﻿using Dapper;
 using Flashcards.Database;
 using Flashcards.Models;
-using System;
-using System.Data;
 
 public class SeedData
 {
-    private readonly Database _database;
+    private AppDatabase _database;
 
-    public SeedData(Database database)
+    public SeedData()
     {
-        _database = database;
+        _database = AppDatabase.Instance;
     }
 
     public void InsertSeedData()

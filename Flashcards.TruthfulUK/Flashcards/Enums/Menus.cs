@@ -20,4 +20,19 @@ internal static class Menus
         [Display(Name = "Exit Application")]
         ExitApplication
     }
+
+    internal enum ManageCardsMenu
+    {
+        [Display(Name = "Add a Card")]
+        AddCard,
+
+        [Display(Name = "Delete a Card")]
+        DeleteCard,
+
+        [Display(Name = "View all Cards within a Stack")]
+        ViewCardsFromStack,
+
+        [Display(Name = "Back to Main Menu")]
+        BackToMenu
+    }
 }

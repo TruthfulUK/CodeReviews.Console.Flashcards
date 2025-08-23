@@ -1,6 +1,8 @@
 ﻿using Spectre.Console;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Flashcards.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Flashcards.Helpers;
 internal static class InterfaceHelpers
@@ -29,6 +31,42 @@ internal static class InterfaceHelpers
             .AddChoices(options.Keys));
 
         return options[selectedKey];
+    }
+
+    public static Stack SelectStackPrompt(List<Stack> stacks)
+    {
+        var selectedStack = AnsiConsole.Prompt(
+        new SelectionPrompt<Stack>()
+            .Title("Please select an [blue]option[/]:")
+            .AddChoices(stacks)
+            .UseConverter(stack => stack.Name));
+        return selectedStack;
+    }
+
+    public static string StringInputPrompt(string prompt)
+    {
+        var input = AnsiConsole.Prompt(
+            new TextPrompt<string>(prompt)
+            .Validate(text => !text.IsNullOrEmpty() 
+                ? Spectre.Console.ValidationResult.Success()
+                : Spectre.Console.ValidationResult.Error("\n[red]Input cannot be null or empty.[/]\n"))
+        );
+        return input.Trim();
+    }
+
+    public static int RowIdPrompt(List<int> rowIds)
+    {
+        var inputId = AnsiConsole.Prompt(
+            new TextPrompt<int>("Enter an ID # from the above table:")
+            .Validate(input =>
+            {
+                return rowIds.Contains(input)
+                ? Spectre.Console.ValidationResult.Success()
+                : Spectre.Console.ValidationResult.Error("\n[red]Invalid ID # - please enter an ID # from the table displayed above[/]\n");
+            })
+        );
+
+        return inputId;
     }
 
     public static void DisplayHeader(string title)

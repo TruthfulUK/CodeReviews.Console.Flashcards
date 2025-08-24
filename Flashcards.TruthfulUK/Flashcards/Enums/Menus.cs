@@ -11,11 +11,8 @@ internal static class Menus
         [Display(Name = "Manage Stacks")]
         ManageStacks,
 
-        [Display(Name = "Start a Study Session")]
-        StartStudy,
-
-        [Display(Name = "View Historic Study Sessions")]
-        ViewStudyHistory,
+        [Display(Name = "My Study Sessions")]
+        StudySessions,
 
         [Display(Name = "Exit Application")]
         ExitApplication

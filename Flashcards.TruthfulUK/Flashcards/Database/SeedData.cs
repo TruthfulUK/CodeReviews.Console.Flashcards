@@ -35,6 +35,27 @@ public class SeedData
                 var insertCardSql = "INSERT INTO Cards (Front, Back, StackId) VALUES (@Front, @Back, @StackId)";
                 connection.Execute(insertCardSql, new { card.Front, card.Back, StackId = stack.Id });
             }
+
+            var random = new Random();
+
+            for (int i = 0; i < 5; i++)
+            {
+                int totalCards = cards.Count;
+                int correct = random.Next(0, totalCards + 1);
+                decimal score = ((decimal)correct / totalCards) * 100;
+                DateTime sessionTime = DateTime.Now.AddDays(-i).AddMinutes(random.Next(0, 720));
+
+                var sessionInsertSql = @"
+                INSERT INTO StudySessions (SessionTime, Score, StackId)
+                VALUES (@SessionTime, @Score, @StackId)";
+
+                connection.Execute(sessionInsertSql, new
+                {
+                    SessionTime = sessionTime,
+                    Score = Math.Round(score, 2),
+                    StackId = stack.Id
+                });
+            }
         }
     }
 

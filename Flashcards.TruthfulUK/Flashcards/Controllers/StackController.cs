@@ -69,7 +69,7 @@ internal class StackController
     {
         ViewAllStacks(deleteCaller: true);
 
-        AnsiConsole.MarkupLine($"[bold]Warning:[/] Deleting a Stack will also delete [red]all cards[/] within that Stack. This action cannot be reversed.\n");
+        AnsiConsole.MarkupLine($"[bold]Warning:[/] Deleting a Stack will also delete [red]all cards[/] and [red]all recorded Study Sessions[/] with that Stack. This action cannot be reversed.\n");
 
         int rowId = InterfaceHelpers.RowIdPrompt(_currentRowIds);
 

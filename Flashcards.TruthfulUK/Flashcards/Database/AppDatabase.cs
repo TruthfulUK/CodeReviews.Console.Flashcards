@@ -24,7 +24,10 @@ public sealed class AppDatabase
     private AppDatabase(string connectionString)
     {
         _connectionString = connectionString;
-        DebugDropTables();
+
+        // Uncomment this method if you want to reset the database state on app start for testing.
+        // DebugDropTables();
+
         InitializeDatabase();
     }
 

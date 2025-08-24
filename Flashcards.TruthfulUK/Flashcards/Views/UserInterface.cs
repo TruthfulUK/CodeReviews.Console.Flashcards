@@ -25,7 +25,7 @@ public class UserInterface
                 case MainMenu.ManageStacks:
                     _stackController.DisplayInterface();
                     break;
-                case MainMenu.StartStudy:
+                case MainMenu.StudySessions:
                     _studyController.DisplayInterface();
                     break;
                 case MainMenu.ExitApplication:

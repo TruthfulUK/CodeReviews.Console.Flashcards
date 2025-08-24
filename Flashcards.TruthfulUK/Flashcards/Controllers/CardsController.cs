@@ -84,7 +84,7 @@ internal class CardsController
 
         var cardTable = new Table();
         cardTable
-            .AddColumn(new TableColumn("[white on blue] Card Row ID [/]").Centered())
+            .AddColumn("[white on blue] Card Row ID [/]")
             .AddColumn("[white on blue] Card Front (Q)[/]")
             .AddColumn("[white on blue] Card Back (A)[/]")
             .ShowRowSeparators()

@@ -6,6 +6,7 @@ namespace Flashcards.Views;
 public class UserInterface
 {
     private readonly CardsController _cardsController = new CardsController();
+    private readonly StackController _stackController = new StackController();
     public void Display()
     {
         while (true)
@@ -21,6 +22,7 @@ public class UserInterface
                     _cardsController.DisplayInterface();
                     break;
                 case MainMenu.ManageStacks:
+                    _stackController.DisplayInterface();
                     break;
                 case MainMenu.StartStudy:
                     break;

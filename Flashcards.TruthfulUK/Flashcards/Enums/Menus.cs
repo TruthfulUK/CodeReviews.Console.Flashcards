@@ -35,4 +35,19 @@ internal static class Menus
         [Display(Name = "Back to Main Menu")]
         BackToMenu
     }
+
+    internal enum ManageStacksMenu
+    {
+        [Display(Name = "Add a New Stack")]
+        AddStack,
+
+        [Display(Name = "Delete a Stack")]
+        DeleteStack,
+
+        [Display(Name = "View all Stacks")]
+        ViewAllStacks,
+
+        [Display(Name = "Back to Main Menu")]
+        BackToMenu
+    }
 }

@@ -24,6 +24,7 @@ public sealed class AppDatabase
     private AppDatabase(string connectionString)
     {
         _connectionString = connectionString;
+        DebugDropTables();
         InitializeDatabase();
     }
 

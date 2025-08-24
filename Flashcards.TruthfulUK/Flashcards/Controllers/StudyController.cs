@@ -116,7 +116,7 @@ internal class StudyController
         foreach (StudySession session in sessions)
         {
             sessionTable.AddRow(
-                $"{session.sessionTime}",
+                $"{session.SessionTime}",
                 $"{session.Score:F2}%"
             );
         }

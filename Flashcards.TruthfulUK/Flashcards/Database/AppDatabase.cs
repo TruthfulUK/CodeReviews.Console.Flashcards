@@ -56,6 +56,17 @@ public sealed class AppDatabase
                         FOREIGN KEY REFERENCES Stacks(Id) 
                         ON DELETE CASCADE
                         ON UPDATE CASCADE
+                );
+
+                IF OBJECT_ID('dbo.StudySessions', 'U') IS NULL
+                CREATE TABLE StudySessions (
+                    Id INT PRIMARY KEY IDENTITY,
+                    SessionTime DATETIME,
+                    Score DECIMAL(5,2),
+                    StackId INT NOT NULL 
+                        FOREIGN KEY REFERENCES Stacks(Id) 
+                        ON DELETE CASCADE
+                        ON UPDATE CASCADE
                 );";
 
             connection.Execute(sql);
@@ -69,6 +80,9 @@ public sealed class AppDatabase
             string sql = @"
                 IF OBJECT_ID('dbo.Cards', 'U') IS NOT NULL
                     DROP TABLE dbo.Cards;
+
+                IF OBJECT_ID('dbo.StudySessions', 'U') IS NOT NULL
+                    DROP TABLE dbo.StudySessions;
 
                 IF OBJECT_ID('dbo.Stacks', 'U') IS NOT NULL
                     DROP TABLE dbo.Stacks;";

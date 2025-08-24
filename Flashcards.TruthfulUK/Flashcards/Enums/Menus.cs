@@ -50,4 +50,16 @@ internal static class Menus
         [Display(Name = "Back to Main Menu")]
         BackToMenu
     }
+
+    internal enum StudySessionMenu
+    {
+        [Display(Name = "Start a Study Session")]
+        StartStudy,
+
+        [Display(Name = "View Study Session History")]
+        ViewStudyHistory,
+
+        [Display(Name = "Back to Main Menu")]
+        BackToMenu
+    }
 }

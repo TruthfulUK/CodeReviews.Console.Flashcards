@@ -98,9 +98,9 @@ internal class CardsController
         foreach (Card card in cards)
         {
             cardTable.AddRow(
-                    $"{card.Id}",
-                    $"{card.Front}",
-                    $"{card.Back}"
+                $"{card.Id}",
+                $"{card.Front}",
+                $"{card.Back}"
             );
             _currentRowIds.Add(card.Id);
         }

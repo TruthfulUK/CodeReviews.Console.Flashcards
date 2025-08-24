@@ -7,6 +7,7 @@ public class UserInterface
 {
     private readonly CardsController _cardsController = new CardsController();
     private readonly StackController _stackController = new StackController();
+    private readonly StudyController _studyController = new StudyController();
     public void Display()
     {
         while (true)
@@ -25,8 +26,7 @@ public class UserInterface
                     _stackController.DisplayInterface();
                     break;
                 case MainMenu.StartStudy:
-                    break;
-                case MainMenu.ViewStudyHistory:
+                    _studyController.DisplayInterface();
                     break;
                 case MainMenu.ExitApplication:
                     Environment.Exit(0);
